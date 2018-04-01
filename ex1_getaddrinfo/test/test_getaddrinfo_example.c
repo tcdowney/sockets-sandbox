@@ -3,9 +3,7 @@
 
     Run these tests using `make test`
 
-    Beej's guide: http://beej.us/guide/bgnet/html/multi/syscalls.html#getaddrinfo
-    man page: http://man7.org/linux/man-pages/man3/getaddrinfo.3.html
-
+    References:
     struct addrinfo {
         int              ai_flags;
         int              ai_family;
@@ -16,13 +14,16 @@
         char            *ai_canonname;
         struct addrinfo *ai_next;
     };
+
+    Beej's guide: http://beej.us/guide/bgnet/html/multi/syscalls.html#getaddrinfo
+    man page: http://man7.org/linux/man-pages/man3/getaddrinfo.3.html
 */
 
-#include "../../vendor/unity/unity.h"
-#include "../src/getaddrinfo_example.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include "../../vendor/unity/unity.h"
+#include "../src/getaddrinfo_example.h"
 
 void it_returns_0_when_no_errors_occur(void)
 {

@@ -7,8 +7,6 @@
     man page: http://man7.org/linux/man-pages/man2/socket.2.html
 */
 
-#include "../../vendor/unity/unity.h"
-#include "../src/socket_example.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
@@ -19,6 +17,8 @@
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <netdb.h>
+#include "../../vendor/unity/unity.h"
+#include "../src/socket_example.h"
 
 int set_server_addrinfo(struct addrinfo **my_addrinfo) {
     char *port = "5678";
