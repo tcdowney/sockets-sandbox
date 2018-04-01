@@ -1,4 +1,9 @@
 /*
+    Exercise 1 - getaddrinfo()
+
+    Run these tests using `make test`
+
+    Beej's guide: http://beej.us/guide/bgnet/html/multi/syscalls.html#getaddrinfo
     man page: http://man7.org/linux/man-pages/man3/getaddrinfo.3.html
 
     struct addrinfo {
@@ -21,7 +26,7 @@
 
 void it_returns_0_when_no_errors_occur(void)
 {
-    struct addrinfo *my_addrinfo; /* pointer to getaddrinfo results */
+    struct addrinfo *my_addrinfo;
     int ret;
     ret = set_addrinfo(&my_addrinfo);
     TEST_ASSERT_EQUAL_INT(0, ret);
@@ -31,7 +36,7 @@ void it_returns_0_when_no_errors_occur(void)
 
 void it_does_not_specify_an_address_family(void)
 {
-    struct addrinfo *my_addrinfo; /* pointer to getaddrinfo results */
+    struct addrinfo *my_addrinfo;
     set_addrinfo(&my_addrinfo);
 
     bool is_ipv4_or_ipv6 = (my_addrinfo->ai_family == AF_INET) || (my_addrinfo->ai_family == AF_INET6);
@@ -42,7 +47,7 @@ void it_does_not_specify_an_address_family(void)
 
 void it_specifies_a_tcp_stream_socket(void)
 {
-    struct addrinfo *my_addrinfo; /* pointer to getaddrinfo results */
+    struct addrinfo *my_addrinfo;
     set_addrinfo(&my_addrinfo);
 
     TEST_ASSERT_EQUAL_INT(SOCK_STREAM, my_addrinfo->ai_socktype);
@@ -52,7 +57,7 @@ void it_specifies_a_tcp_stream_socket(void)
 
 void it_sets_the_ai_passive_flag(void)
 {
-    struct addrinfo *my_addrinfo; /* pointer to getaddrinfo results */
+    struct addrinfo *my_addrinfo;
     set_addrinfo(&my_addrinfo);
 
     bool ai_passive_flag_present = (my_addrinfo->ai_flags & AI_PASSIVE) == AI_PASSIVE;

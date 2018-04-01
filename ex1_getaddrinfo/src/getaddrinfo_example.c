@@ -1,22 +1,25 @@
 /*
+    Exercise 1 - getaddrinfo()
+
+    In this exercise we'll create a method called set_addrinfo() that
+    will take an unitialized addrinfo struct that use getaddrinfo()
+    to populate it. The addrinfo struct is not required, but will make
+    calling other socket related methods easier.
+    
+    In this example we'll configure the addrinfo so that it will be suitable
+    for later creating a socket that we can bind to and accept connections on.
+
+    The skeleton code below is currently misconfigured. Refer to the documentation
+    and Beej's guide to give getaddrinfo() the correct hints to pass our tests!
+
     Beej's guide: http://beej.us/guide/bgnet/html/multi/syscalls.html#getaddrinfo
     man page: http://man7.org/linux/man-pages/man3/getaddrinfo.3.html
-    
-    The getaddrinfo() method takes a few parameters and will populate
-    an addrinfo struct that we will use in later socket related calls.
-
-    In this example we'll configure it in "server mode" and provide it some hints
-    to help accomplish that.
-
-    int getaddrinfo(const char *node, const char *service,
-        const struct addrinfo *hints,
-        struct addrinfo **res);
 */
 
 #include "getaddrinfo_example.h"
 
 int set_addrinfo(struct addrinfo **my_addrinfo) {
-    char *port = "5678";
+    char *port = "5678"; // Arbitrary port
     struct addrinfo hints;
     memset(&hints, 0, sizeof(hints));
 

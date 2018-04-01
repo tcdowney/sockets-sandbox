@@ -1,9 +1,12 @@
-/* Sample solution code for getaddrinfo_example.c  */
+/* 
+    Sample solution code for Exercise 1
+    getaddrinfo_example.c  
+*/
 
 #include "getaddrinfo_example.h"
 
 int set_addrinfo(struct addrinfo **my_addrinfo) {
-    char *port = "5678";
+    char *port = "5678";  // Arbitrary port
     struct addrinfo hints;
     memset(&hints, 0, sizeof(hints));
 
