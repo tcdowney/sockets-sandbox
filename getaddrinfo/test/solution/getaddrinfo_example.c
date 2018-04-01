@@ -1,4 +1,6 @@
-#include "../src/getaddrinfo_example.h"
+/* Sample solution code for getaddrinfo_example.c  */
+
+#include "getaddrinfo_example.h"
 
 int set_addrinfo(struct addrinfo **my_addrinfo) {
     char *port = "5678";
@@ -9,9 +11,6 @@ int set_addrinfo(struct addrinfo **my_addrinfo) {
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = AI_PASSIVE;
 
-    // Setting node to NULL combined with the AI_PASSIVE flag will
-    // return us socket addresses that are suitable for a server that
-    // will bind to a socket and accept connections
     int getaddr_status = getaddrinfo(NULL, port, &hints, my_addrinfo);
     if (getaddr_status != 0) {
         fprintf(stderr, "getaddrinfo error: %s\n", gai_strerror(getaddr_status));
