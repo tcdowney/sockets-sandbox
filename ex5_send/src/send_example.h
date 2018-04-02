@@ -10,6 +10,6 @@
 #ifndef SEND_EXAMPLE_H
 #define SEND_EXAMPLE_H
 
-int send_message(socklen_t socket_fildes, char *message);
+int send_message(int socket_fildes, char *message);
 
 #endif

@@ -45,7 +45,7 @@ void it_binds_to_the_given_socket_using_info_from_addrinfo(void)
     struct addrinfo *my_addrinfo;
     set_server_addrinfo(&my_addrinfo);
 
-    socklen_t socket_fildes = socket(my_addrinfo->ai_family, my_addrinfo->ai_socktype, my_addrinfo->ai_protocol);
+    int socket_fildes = socket(my_addrinfo->ai_family, my_addrinfo->ai_socktype, my_addrinfo->ai_protocol);
     if (socket_fildes == -1) {
         perror("socket create failed");
     }

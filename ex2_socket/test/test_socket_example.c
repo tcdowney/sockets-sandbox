@@ -45,7 +45,7 @@ void it_returns_a_socket_file_descriptor_when_given_addrinfo(void)
     struct addrinfo *my_addrinfo;
     set_server_addrinfo(&my_addrinfo);
 
-    socklen_t socket_file_descriptor;
+    int socket_file_descriptor;
     socket_file_descriptor = create_socket(my_addrinfo);
 
     // Return value of -1 should denote that an error has occurred

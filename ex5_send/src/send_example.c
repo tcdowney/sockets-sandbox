@@ -10,7 +10,7 @@
 
 #include "send_example.h"
 
-int send_message(socklen_t socket_fildes, char *message) {
+int send_message(int socket_fildes, char *message) {
     (void) socket_fildes; // No-op to avoid compiler warnings around unused var
     (void) message; // No-op to avoid compiler warnings around unused var
 
