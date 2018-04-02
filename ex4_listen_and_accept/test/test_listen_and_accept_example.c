@@ -50,7 +50,7 @@ void it_listens_and_accepts_connections(void)
     struct addrinfo *my_addrinfo;
     set_server_addrinfo(&my_addrinfo);
 
-    int socket_fildes = socket(my_addrinfo->ai_family, my_addrinfo->ai_socktype, my_addrinfo->ai_protocol);
+    socklen_t socket_fildes = socket(my_addrinfo->ai_family, my_addrinfo->ai_socktype, my_addrinfo->ai_protocol);
     if (socket_fildes == -1) {
         perror("socket create failed");
     }
@@ -70,7 +70,6 @@ void it_listens_and_accepts_connections(void)
     }
     TEST_ASSERT(socket_flags != -1);
 
-    // Return value of -1 should denote that an error has occurred
     int bind_result = bind(socket_fildes, my_addrinfo->ai_addr, my_addrinfo->ai_addrlen);
     if (bind_result == -1) {
         perror("binding socket failed");
@@ -91,7 +90,7 @@ void it_listens_and_accepts_connections(void)
 
 int main(void)
 {
-    UnityBegin("test/test_getaddrinfo_example.c");
+    UnityBegin("test/test_listen_and_accept_example.c");
 
     RUN_TEST(it_listens_and_accepts_connections);
 

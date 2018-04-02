@@ -19,7 +19,7 @@
 int create_socket(struct addrinfo *my_addrinfo) {
     (void) my_addrinfo; // No-op to avoid compiler warnings around unused var
 
-    int socket_fd = socket(0, 0, 0);
+    socklen_t socket_fd = socket(0, 0, 0);
     if (socket_fd == -1) {
         perror("socket create failed");
         return -1;

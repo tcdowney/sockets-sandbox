@@ -45,7 +45,7 @@ void it_returns_a_socket_file_descriptor_when_given_addrinfo(void)
     struct addrinfo *my_addrinfo;
     set_server_addrinfo(&my_addrinfo);
 
-    int socket_file_descriptor;
+    socklen_t socket_file_descriptor;
     socket_file_descriptor = create_socket(my_addrinfo);
 
     // Return value of -1 should denote that an error has occurred
@@ -68,7 +68,7 @@ void it_returns_a_socket_file_descriptor_when_given_addrinfo(void)
 
 int main(void)
 {
-    UnityBegin("test/test_getaddrinfo_example.c");
+    UnityBegin("test/test_socket_example.c");
 
     RUN_TEST(it_returns_a_socket_file_descriptor_when_given_addrinfo);
 
