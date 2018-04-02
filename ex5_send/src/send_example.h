@@ -7,8 +7,8 @@
 #include <sys/socket.h>
 #include <netdb.h>
 
-#ifndef GETADDRINFO_EXAMPLE_H
-#define GETADDRINFO_EXAMPLE_H
+#ifndef SEND_EXAMPLE_H
+#define SEND_EXAMPLE_H
 
 int send_message(socklen_t socket_fildes, char *message);
 

@@ -7,8 +7,8 @@
 #include <sys/socket.h>
 #include <netdb.h>
 
-#ifndef GETADDRINFO_EXAMPLE_H
-#define GETADDRINFO_EXAMPLE_H
+#ifndef SOCKET_EXAMPLE_H
+#define SOCKET_EXAMPLE_H
 
 int create_socket(struct addrinfo *my_addrinfo);
 

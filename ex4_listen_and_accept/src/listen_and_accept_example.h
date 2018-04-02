@@ -7,8 +7,8 @@
 #include <sys/socket.h>
 #include <netdb.h>
 
-#ifndef GETADDRINFO_EXAMPLE_H
-#define GETADDRINFO_EXAMPLE_H
+#ifndef LISTED_AND_ACCEPT_EXAMPLE_H
+#define LISTED_AND_ACCEPT_EXAMPLE_H
 
 int listen_and_accept(int socket_fildes, int backlog_size);
 
