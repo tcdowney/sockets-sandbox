@@ -72,6 +72,7 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
+    // Convert port back into a string for later use
     sprintf(port_string, "%d", port);
 
     /* YOUR CODE HERE */
