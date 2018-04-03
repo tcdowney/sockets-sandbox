@@ -70,27 +70,42 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    int socket_fildes = socket(server_addrinfo->ai_family, server_addrinfo->ai_socktype, server_addrinfo->ai_protocol);
-    if (socket_fildes == -1) {
-        perror("socket create failed");
-        exit(1);
-    }
+    int socket_fildes;
+    struct addrinfo *addrinfo_p;
 
-    // Reuse the socket to avoid "Address already in use" errors
-    // See http://beej.us/guide/bgnet/html/multi/syscalls.htm
-    int please_reuse=1;
-    if (setsockopt(socket_fildes, SOL_SOCKET, SO_REUSEADDR, &please_reuse, sizeof please_reuse) == -1) {
-        perror("setsockopt failes");
-        exit(1);
-    }
+    // Loop through all of the addrinfos returned by getaddrinfo() and bind to the first one that works
+    for(addrinfo_p = server_addrinfo; addrinfo_p != NULL; addrinfo_p = addrinfo_p->ai_next) {
+        if ((socket_fildes = socket(addrinfo_p->ai_family, addrinfo_p->ai_socktype, addrinfo_p->ai_protocol)) == -1) {
+            perror("socket failed");
+            continue;
+        }
 
-    if (bind(socket_fildes, server_addrinfo->ai_addr, server_addrinfo->ai_addrlen) == -1) {
-        perror("binding socket failed");
-        exit(1);
+        // Reuse the socket to avoid "Address already in use" errors
+        // See http://beej.us/guide/bgnet/html/multi/syscalls.htm
+        int please_reuse=1;
+        if (setsockopt(socket_fildes, SOL_SOCKET, SO_REUSEADDR, &please_reuse, sizeof please_reuse) == -1) {
+            perror("setsockopt failed");
+            exit(1);
+        }
+
+        if (bind(socket_fildes, addrinfo_p->ai_addr, addrinfo_p->ai_addrlen) == -1) {
+            close(socket_fildes);
+            perror("bind failed");
+            continue;
+        }
+
+        break;
     }
 
     // Do not need this anymore, let it go :)
     freeaddrinfo(server_addrinfo);
+
+    // If this is NULL it means we went through all of the addrinfo structs
+    // that getaddrinfo() returned and were not able to bind to any of them
+    if (addrinfo_p == NULL)  {
+        perror("failed to successfully bind to results of getaddrinfo()");
+        exit(1);
+    }
 
     if (listen(socket_fildes, MAX_CONNECTIONS) == -1) {
         perror("listen on socket failed");
@@ -115,6 +130,7 @@ int main(int argc, char **argv) {
         recv_size = recv(connected_socket_fildes, recv_buffer, MESSAGE_BUFSIZE, 0);
         if (recv_size == -1) {
             perror("recv error");
+            close(connected_socket_fildes);
             continue;
         }
 
@@ -122,6 +138,7 @@ int main(int argc, char **argv) {
         send_size = send(connected_socket_fildes, recv_buffer, recv_size, 0);
         if (send_size == -1) {
             perror("send error");
+            close(connected_socket_fildes);
             continue;
         }
 

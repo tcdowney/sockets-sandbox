@@ -7,6 +7,15 @@
     Feel free to go back and look at the functions you've implemented in the earlier
     exercises and draw inspiration from some of the test code.
 
+    Once you get it listening on a port, I recommend using the `nc` utility to connect
+    and send it messages.
+
+    Example:
+    ```
+    $ nc 127.0.0.1 9001
+    send messages here
+    ```
+
     Good luck!
 
     Beej's guide: http://beej.us/guide/bgnet/html/multi/clientserver.html#simpleserver
