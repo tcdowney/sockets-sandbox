@@ -54,35 +54,39 @@ void it_listens_and_accepts_connections(void)
     if (socket_fildes == -1) {
         perror("socket create failed");
     }
-    TEST_ASSERT(socket_fildes != -1);
+    TEST_ASSERT_MESSAGE(socket_fildes != -1, "Test failed to create the socket");
 
     // Make socket non-blocking so that this test does not block forever on accept()
     int socket_flags = fcntl(socket_fildes, F_GETFL, 0);
     if (socket_flags == -1) {
         perror("retrieving socket flags failed");
     }
-    TEST_ASSERT(socket_flags != -1);
+    TEST_ASSERT_MESSAGE(socket_flags != -1, "Test failed to retrieve socket flags");
     socket_flags |= O_NONBLOCK;
 
     socket_flags = fcntl(socket_fildes, F_SETFL, socket_flags);
     if (socket_flags == -1) {
         perror("setting socket to nonblocking mode failed");
     }
-    TEST_ASSERT(socket_flags != -1);
+    TEST_ASSERT_MESSAGE(socket_flags != -1, "Test failed to set the O_NONBLOCK flag");
 
     int bind_result = bind(socket_fildes, my_addrinfo->ai_addr, my_addrinfo->ai_addrlen);
     if (bind_result == -1) {
         perror("binding socket failed");
     }
-    TEST_ASSERT(bind_result != -1);
+    TEST_ASSERT_MESSAGE(bind_result != -1, "Test failed to bind to the socket");
 
     int backlog_size = 10;
     listen_and_accept(socket_fildes, backlog_size);
 
     // These errors are raised when "The socket is marked nonblocking and no connections are present to be accepted."
-    // Since we purposefully put the socket in non-blocking mode, these are expected
+    // Since we purposefully put the socket in non-blocking mode, these are expected and are a roundabout way of testing
+    // that we were listening and accepting correctly
     bool no_connections_present_error_occurred = (errno == EAGAIN) || (errno == EWOULDBLOCK);
-    TEST_ASSERT(no_connections_present_error_occurred);
+    TEST_ASSERT_MESSAGE(
+        no_connections_present_error_occurred,
+        "listen_and_accept() did not result in a EAGAIN or EWOULDBLOCK error"
+    );
 
     freeaddrinfo(my_addrinfo);
     close(socket_fildes);

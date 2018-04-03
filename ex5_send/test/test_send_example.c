@@ -5,7 +5,8 @@
     These tests are a little more complicated than usual. They spin up a second thread
     that will listen and accept connections on a socket and attempt to send a message out.
 
-    You will implement the send_message() that this thread uses to do so.
+    You will implement the send_message() method that this thread invokes to send a
+    message back to our test client.
 
     Beej's guide: http://beej.us/guide/bgnet/html/multi/syscalls.html#sendrecv
     man page: http://man7.org/linux/man-pages/man2/sendmsg.2.html
@@ -117,20 +118,20 @@ void it_sends_a_message_to_connecting_clients(void)
     if (socket_fildes == -1) {
         perror("socket create failed");
     }
-    TEST_ASSERT(socket_fildes != -1);
+    TEST_ASSERT_MESSAGE(socket_fildes != -1, "Test failed to create socket");
 
     int bind_result = bind(socket_fildes, my_addrinfo->ai_addr, my_addrinfo->ai_addrlen);
     if (bind_result == -1) {
         perror("binding socket failed");
     }
     freeaddrinfo(my_addrinfo);
-    TEST_ASSERT(bind_result != -1);
+    TEST_ASSERT_MESSAGE(bind_result != -1, "Test failed to bind to socket");
 
     int listen_result = listen(socket_fildes, 10);
     if (listen_result == -1) {
         perror("listen on socket failed");
     }
-    TEST_ASSERT(listen_result != -1);
+    TEST_ASSERT_MESSAGE(listen_result != -1, "Test failed to listen on socket");
 
     // Create a thread that will handle accepting the connection and will
     // invoke the `send_message()` function that you'll define
@@ -142,10 +143,14 @@ void it_sends_a_message_to_connecting_clients(void)
     if (recv_size == -1) {
         perror("client_connect_and_receive failed");
         close(socket_fildes);
-        TEST_ASSERT(recv_size != -1);
+        TEST_ASSERT_MESSAGE(recv_size != -1, "Test client failed to connect and receive message from send_message()");
     }
 
-    TEST_ASSERT_EQUAL_STRING("Sockets rule", &message);
+    TEST_ASSERT_EQUAL_STRING_MESSAGE(
+        "Sockets rule",
+        &message,
+        "Did not receive expected message back from send_message()"
+    );
 
     close(socket_fildes);
 }

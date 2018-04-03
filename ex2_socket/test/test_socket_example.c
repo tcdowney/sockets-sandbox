@@ -49,7 +49,7 @@ void it_returns_a_socket_file_descriptor_when_given_addrinfo(void)
     socket_file_descriptor = create_socket(my_addrinfo);
 
     // Return value of -1 should denote that an error has occurred
-    TEST_ASSERT(socket_file_descriptor != -1);
+    TEST_ASSERT_MESSAGE(socket_file_descriptor != -1, "create_socket() failed to create the socket");
 
     // Get information about the file descriptor using fstat
     // http://man7.org/linux/man-pages/man3/fstat.3p.html
@@ -60,7 +60,7 @@ void it_returns_a_socket_file_descriptor_when_given_addrinfo(void)
 
     // S_ISSOCK is a macro that tests if a given file descriptor is a socket
     // http://pubs.opengroup.org/onlinepubs/009695399/basedefs/sys/stat.h.html
-    TEST_ASSERT(S_ISSOCK(file_stat.st_mode));
+    TEST_ASSERT_MESSAGE(S_ISSOCK(file_stat.st_mode), "File descriptor returned by create_socket() does not refer to a socket");
 
     freeaddrinfo(my_addrinfo);
     close(socket_file_descriptor);

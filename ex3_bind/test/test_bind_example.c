@@ -49,11 +49,11 @@ void it_binds_to_the_given_socket_using_info_from_addrinfo(void)
     if (socket_fildes == -1) {
         perror("socket create failed");
     }
-    TEST_ASSERT(socket_fildes != -1);
+    TEST_ASSERT_MESSAGE(socket_fildes != -1, "Test failed to create the socket");
 
     // Return value of -1 should denote that an error has occurred
     int bind_result = bind_socket(socket_fildes, my_addrinfo);
-    TEST_ASSERT(bind_result != -1);
+    TEST_ASSERT_MESSAGE(bind_result != -1, "bind_socket() failed to bind to the socket");
 
     // sockaddr_in will only work if you're using IPV4
     // Should be the case since we specified hints.ai_family = AF_INET above
@@ -66,14 +66,14 @@ void it_binds_to_the_given_socket_using_info_from_addrinfo(void)
     if (getsockname_result == -1) {
         perror("getsockname failed");
     }
-    TEST_ASSERT(getsockname_result != -1);
+    TEST_ASSERT_MESSAGE(getsockname_result != -1, "Test failed to get information about the bound socket");
 
     // Test that we bound the socket to the port specified in my_addrinfo
     // GOTCHA: `sin_port` is in "network byte order". We need to convert to host byte order using ntohs
     // ntohs = network to host short (uint16_t in this case)
     // http://man7.org/linux/man-pages/man3/ntohl.3p.html
     int converted_port = ntohs(bound_sockaddr.sin_port);
-    TEST_ASSERT_EQUAL_INT(65001, converted_port);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(65001, converted_port, "bind_socket() did not bind to the correct port");
 
     freeaddrinfo(my_addrinfo);
     close(socket_fildes);
